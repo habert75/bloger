@@ -1,0 +1,230 @@
+
+<head>
+  <title>Bery's official blog</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+</head>
+<body style="background-color:#9fe1ef">
+
+</body>
+
+<template name="discussion">
+{{> categories}}
+
+</template>
+
+<template name="allPosts">
+  {{> categories}}
+  {{> discussPost}}
+</template>
+
+
+<template name="blogContent">
+  {{> categories}}
+  {{> posts}}
+
+</template>
+
+
+
+
+  <template name="categories">
+     <div class="col-sm-3 sidenav">
+      <h4>Bery's Blog</h4>
+       
+       {{> categorieList}}
+
+
+      <ul class="nav nav-pills nav-stacked">
+        <!-- <li class="active"><a href="#section1">Home</a></li> -->
+        <li><a href="#section2">Tutorials</a></li>
+        <li><a href="#section3">Travelling</a></li>
+        <li><a href="#section3">Hobbies</a></li>
+      </ul><br>
+      <div class="input-group">
+        <input type="text" class="form-control"  id ="search" placeholder="Search Blog..">
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button">
+            <span class="glyphicon glyphicon-search"></span>
+          </button>
+        </span>
+      </div>
+    </div>
+
+  </template>
+
+  <template name="addCategorie">
+  <form>
+  <h4> Create Categories</h4>
+  <input type="text" placeholder="Enter categorie" name="categName">
+  </form>
+  </template>
+  
+  <template name="categorieList">
+  <h4> Categories</h4>
+  <ul>
+    {{#each categories}}
+    <li> <a href="/categorie/{{_id}}">{{name}}</a></li>
+    {{/each}}
+
+  </ul>
+    
+  </template>
+
+  <template name="categoriePage">
+{{> categories}}
+    <h2>Categories: {{name}}</h2>
+    {{> posts}}
+</template>
+
+   
+
+    <template name="posts">
+     <div class="col-sm-9">
+     {{> recentPost}}
+      {{> addCommentForm}}
+      {{> commentList}}
+       </div>
+
+      </template> <!-- end of content template -->
+
+      
+
+
+        <template name ="recentPost">
+         {{#each recentP}}
+      
+      <h4><small>RECENT POST  &nbsp;&nbsp;&nbsp;&nbsp; <a href="{{pathFor route='allPosts'}}">View all Posts </a></small></h4>
+      <hr>
+      <h2>{{title}}</h2>
+      <h5><span class="glyphicon glyphicon-time"></span> Post by {{createdBy}},{{createdOn}}</h5>
+     
+      <p>{{text}}</p>
+       <h5><span class="label label-danger"><span class="glyphicon glyphicon-heart"></span></span> <span class="label label-primary"><span class="glyphicon glyphicon-thumbs-up"> </span>
+       </span> <span class="label label-warning">share</span></h5><br>
+
+
+      <br><br>
+      {{/each}}
+
+        </template>
+
+
+      <template name="discussPost">
+      <div class="col-sm-9">
+      {{#each posts}}
+      
+      <h2>{{title}}</h2>
+      <h5><span class="glyphicon glyphicon-time"></span> Post by {{createdBy}},{{createdOn}}</h5>
+     
+      <p>{{text}}</p>
+       <h5>
+       <span class="label label-danger"><span class="glyphicon glyphicon-heart"></span></span> <span class="badge">0</span> 
+       <span class="label label-primary"><span class="glyphicon glyphicon-thumbs-up"> </span> </span><span class="badge">0</span> 
+
+       <span class="label label-warning">share</span><span class="badge">0</span> 
+          <span class="label label-info">comment</span><span class="badge">0</span> </h5><br>
+
+
+      <br><br>
+      {{/each}}
+      </div>
+      
+      </template>
+
+
+      <!-- add comment form -->
+       <template name="addCommentForm">
+      <h4>Leave a Comment:</h4>
+
+        <form role="form">
+        <div class="form-group">
+          <textarea class="form-control" name="commentContent" id="comment_input" rows="3" >  
+          </textarea>
+        </div>
+        <button type="submit" class="btn btn-success js-add-comment">Submit</button>
+      </form>
+     
+      <br><br>
+      </template>
+      <!-- end of add comment form -->
+
+
+
+      <!-- comment content display -->
+      <template name="commentList">
+      <p><span class="badge">{{cmtCount}}</span> Comments:</p><br>
+      
+      {{#each comments}}
+      <div class="row">
+        <div class="col-sm-2 text-center">
+          <img src="avatar.jpg" class="img-circle" height="65" width="65" alt="profile">
+        </div>
+        <div class="col-sm-10">
+          <h4>{{createdBy}}<small>{{createdOn}}</small></h4>
+          <p> {{text}}</p>
+          <br>
+        </div>
+        
+      </div>
+
+      {{/each}}
+
+      </template>
+      <!-- end of comment content display -->
+
+    
+
+
+<template name="home">
+<div class="landing">
+<h2> Welcome to my site</h2>
+Login or create an account to be able o add comments and posts  on this site <br>
+<a href="{{pathFor route='blogContent'}}"> Continue to Posts</a>
+<!--
+  <a href="{{pathFor route='login'}}">Login</a>
+or <a href="{{pathFor route='register'}}">Join</a>
+
+-->
+</div>
+</template>
+
+<template name="main">
+<div class="header">
+<div class="logo">
+   <a href="/"><h1>Habbert.com</h1> </a> 
+    </div>
+    <span  class="login">{{> loginButtons}} <a href="{{pathFor route='addPost'}}">Post</a></span>
+    </div>
+    <hr />
+    {{> yield}}
+
+    <hr />
+    <div class="footer" style="padding-top:200px;">
+    <p>Copyright &copy;Bertrand 2017-</p>
+    </div>
+</template>
+
+<!-- post ui -->
+<template name="addPost">
+{{> categories}}
+<div class="col-sm-9">
+<form role="form">
+        <div class="form-group">
+        <input type="text" name="postCateg" placeholder="enter categorie">
+        <input type="text" name="postTitle" placeholder="Enter post title">
+          <textarea class="form-control" name="postContent" id="post_input" rows="3" required>  
+          </textarea>
+        </div>
+        <button type="submit" class="btn btn-success js-add-post">Submit</button>
+      </form>
+      </div>
+</template>
+
+
+
